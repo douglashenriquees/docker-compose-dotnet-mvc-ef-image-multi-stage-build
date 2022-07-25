@@ -1,0 +1,40 @@
+﻿@model IEnumerable<mvc.Models.Produto>
+
+<div class="text-center">
+    <h1 class="display-4">Welcome - @ViewBag.Message</h1>
+    <br>
+    <div class="m-1 p-1">
+        <table class="table table-sm table-striped">
+            <thead>
+                <tr>
+                    <td>ID</td>
+                    <td>Nome</td>
+                    <td>Categoria</td>
+                    <td>Preço</td>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    try
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.ProdutoId</td>
+                                <td>@item.Nome</td>
+                                <td>@item.Categoria</td>
+                                <td>@item.Preco</td>
+                            </tr>
+                        }
+                    }
+                    catch
+                    {
+                        <small>Erro ao recuperar produtos. Verifique a conexão com o banco de dados</small>
+                        <br>
+                        <br>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
