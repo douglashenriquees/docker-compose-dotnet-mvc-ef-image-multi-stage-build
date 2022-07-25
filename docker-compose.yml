@@ -25,7 +25,7 @@ services:
     networks:
       - backend
     ports:
-      - 4400:5000
+      - 4400:80
     environment:
       - DBHOST=mysql
     depends_on:

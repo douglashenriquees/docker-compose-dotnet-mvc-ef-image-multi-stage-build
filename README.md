@@ -12,30 +12,36 @@
 
 ## Dockerfile
 
-* ```FROM mcr.microsoft.com/dotnet/sdk:6.0```
-  * imagem com base no **sdk** do dotnet 6.0
-* ```LABEL version="4.0" description="Aplicacao ASP .NET MVC```
-  * versão e descrição da imagem
-* ```RUN mkdir /app```
-  * o comando **RUN** executa ações dentro do container. Neste caso, criar o diretório **/app** na raiz do container
+* ```FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base```
+  * utiliza a imagem do **aspnet 6.0** e atribui a ela o alias **base**
 * ```WORKDIR /app```
-  * o comando **WORKDIR** define o diretório de trabalho dentro do container. Isso faz as instruções abaixo serem executadas dentro do diretório estabalecido, até o final do arquivo, ou até outro comando com a sentença **WORKDIR**
+  * cria e define a pasta **/app** como diretório de trabalho
+* ```EXPOSE 80```
+  * expõe a porta 80
+
+* ```FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build```
+  * utiliza a imagem do **dotnet sdk 6.0** e atribui a ela o alias **build**
+* ```WORKDIR /src```
+  * cria e define a pasta **/src** como diretório de trabalho
 * ```COPY . .```
-  * copia todos os arquivos do **host** para a pasta **"/app - WORKDIR"** do container
+  * copia todos os arquivos do **host** para a pasta de trabalho dentro do container
 * ```RUN dotnet restore```
   * executa o comando para restaurar as dependências do nuget dentro do container
-* ```RUN dotnet publish -c Release -o dist```
-  * executa o comando para publicar a aplicação dentro da pasta **dist** no **WORKDIR** do container
-* ```EXPOSE 80/tcp```
-  * expõe a porta **80** do container
-* ```ENV ASPNETCORE_URLS=http://+:5000```
-  * define também a porta **5000** para ser exposta. Configuração específica desta imagem do **dotnet/sdk**
-* ```CMD [ "dotnet", "dist/mvc.dll" ]```
-  * o **CMD** tem o mesmo efeito do **ENTRYPOINT**. Executar o **dotnet** sobre o arquivo **.dll** publicado no container
+* ```RUN dotnet publish -c Release -o app```
+  * executa o comando para publicar a aplicação dentro da pasta **/src/app** do container
+
+* ```FROM base AS final```
+  * cria uma nova imagem apartir da imagem **base** e atribui a ela o alias **final**
+* ```WORKDIR /app```
+  * cria e define a pasta **/app** como diretório de trabalho
+* ```COPY --from=build /app .```
+  * copia o conteúdo da pasta **/src/app** da imagem **build** para o pasta de trabalho da imagem **final**
+* ```ENTRYPOINT [ "dotnet", "mvc.dll" ]```
+  * executa a aplicação de dentro da pasta de trabalho da imagem **final**
 
 ## Publicando a Imagem
 
-* ```docker image build -t asp-net-mvc/app:4.0 .```
-* ```docker image tag asp-net-mvc/app:4.0 username/mvc-produtos:4.0```
+* ```docker image build -t asp-net-mvc/app:5.0 .```
+* ```docker image tag asp-net-mvc/app:5.0 username/mvc-produtos:5.0```
 * ```docker login -u username```
-* ```docker image push username/mvc-produtos:4.0```
+* ```docker image push username/mvc-produtos:5.0```
