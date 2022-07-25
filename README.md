@@ -13,7 +13,7 @@
 ## Dockerfile
 
 * ```FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base```
-  * utiliza a imagem do **aspnet 6.0** e atribui a ela o alias **base**
+  * utiliza a imagem do **aspnet 6.0** e atribui a ela o aliás **base**
 * ```WORKDIR /app```
   * cria e define a pasta **/app** como diretório de trabalho
 * ```EXPOSE 80```
@@ -22,7 +22,7 @@
 <hr>
 
 * ```FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build```
-  * utiliza a imagem do **dotnet sdk 6.0** e atribui a ela o alias **build**
+  * utiliza a imagem do **dotnet sdk 6.0** e atribui a ela o aliás **build**
 * ```WORKDIR /src```
   * cria e define a pasta **/src** como diretório de trabalho
 * ```COPY . .```
@@ -35,7 +35,7 @@
 <hr>
 
 * ```FROM base AS final```
-  * cria uma nova imagem apartir da imagem **base** e atribui a ela o alias **final**
+  * cria uma nova imagem apartir da imagem **base** e atribui a ela o aliás **final**
 * ```WORKDIR /app```
   * cria e define a pasta **/app** como diretório de trabalho
 * ```COPY --from=build /app .```
