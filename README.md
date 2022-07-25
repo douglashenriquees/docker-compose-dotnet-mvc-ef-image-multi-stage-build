@@ -19,6 +19,8 @@
 * ```EXPOSE 80```
   * expõe a porta 80
 
+<hr>
+
 * ```FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build```
   * utiliza a imagem do **dotnet sdk 6.0** e atribui a ela o alias **build**
 * ```WORKDIR /src```
@@ -29,6 +31,8 @@
   * executa o comando para restaurar as dependências do nuget dentro do container
 * ```RUN dotnet publish -c Release -o app```
   * executa o comando para publicar a aplicação dentro da pasta **/src/app** do container
+
+<hr>
 
 * ```FROM base AS final```
   * cria uma nova imagem apartir da imagem **base** e atribui a ela o alias **final**
